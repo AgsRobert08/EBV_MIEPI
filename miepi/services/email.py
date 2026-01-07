@@ -1,6 +1,9 @@
 from django.core.mail import EmailMessage
 from django.conf import settings
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 def enviar_correo_registro(inscrito):
     if not inscrito.correo_electronico:
@@ -14,6 +17,7 @@ Hola {inscrito.nombre},
 Tu registro ha sido realizado correctamente.
 Debe presentar el QR recibido en este correo para validar 
 su asistencia.
+
 Dios te bendiga.
 """
 
@@ -25,23 +29,19 @@ Dios te bendiga.
         reply_to=[settings.EMAIL_HOST_USER],
     )
 
-    # Adjuntar QR desde Cloudinary
-    if hasattr(inscrito, "qr_image") and inscrito.qr_image:
+    if inscrito.qr_image:
         try:
-            # Obtener la URL de Cloudinary
             qr_url = inscrito.qr_image.url
-            
-            # Descargar el QR desde Cloudinary
-            response = requests.get(qr_url)
-            
+            response = requests.get(qr_url, timeout=10)
+
             if response.status_code == 200:
-                # Adjuntar el contenido del archivo
-                filename = f"qr_{inscrito.id}.png"
-                email.attach(filename, response.content, 'image/png')
+                content_type = response.headers.get('Content-Type', 'image/png')
+                filename = f"qr_{inscrito.codigo}.png"
+                email.attach(filename, response.content, content_type)
             else:
-                print(f"No se pudo descargar el QR: HTTP {response.status_code}")
-                
-        except Exception as e:
-            print("No se pudo adjuntar el QR:", e)
+                logger.warning(f"No se pudo descargar QR ({response.status_code})")
+
+        except Exception:
+            logger.exception("Error al adjuntar QR desde Cloudinary")
 
     email.send(fail_silently=False)
