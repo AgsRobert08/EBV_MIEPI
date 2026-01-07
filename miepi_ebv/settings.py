@@ -146,6 +146,8 @@ DEFAULT_FROM_EMAIL = "MIEPI <serviceswebsoportepy@gmail.com>"
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    "CSRF_TRUSTED_ORIGINS", ""
-).split(",")
+CSRF_TRUSTED_ORIGINS = [
+    origin for origin in os.getenv(
+        "CSRF_TRUSTED_ORIGINS", ""
+    ).split(",") if origin
+]
