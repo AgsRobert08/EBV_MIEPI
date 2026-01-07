@@ -32,4 +32,4 @@ Dios te bendiga.
         except Exception as e:
             print("No se pudo adjuntar el QR:", e)
 
-    email.send(fail_silently=False)
+    email.send(fail_silently=True)
