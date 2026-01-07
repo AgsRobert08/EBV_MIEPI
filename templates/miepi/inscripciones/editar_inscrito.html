@@ -1,0 +1,343 @@
+{% extends 'miepi/base.html' %}
+
+{% block title %}Editar Inscripción{% endblock %}
+{% block header_title %}Editar Registro{% endblock %}
+
+{% block content %}
+<div class="container">
+<section class="form-card">
+<form method="POST" action="{% url 'miepi:editar_inscrito' inscrito.id %}" id="form">
+{% csrf_token %}
+
+<div>
+<label>Nombre Completo</label>
+<input type="text" name="nombre" id="nombre" required
+       value="{{ inscrito.nombre }}">
+</div>
+
+<div>
+<label>Género</label>
+<div class="radio-group">
+<label class="radio-item">
+<input type="radio" name="genero" value="Masculino" required
+{% if inscrito.genero == "Masculino" %}checked{% endif %}>
+<span></span> Masculino
+</label>
+
+<label class="radio-item">
+<input type="radio" name="genero" value="Femenino"
+{% if inscrito.genero == "Femenino" %}checked{% endif %}>
+<span></span> Femenino
+</label>
+</div>
+</div>
+
+<!-- SWITCH -->
+<div class="switch-container">
+  <label class="switch">
+    <input type="checkbox" id="otra_denominacion" name="otra_denominacion"
+    {% if inscrito.otra_denominacion %}checked{% endif %}>
+    <span class="slider"></span>
+  </label>
+  <span class="switch-label">¿Otra denominación?</span>
+</div>
+
+<!-- NOMBRE DENOMINACIÓN -->
+<div id="denominacion-container" style="display:none">
+<label>Nombre de la Denominación</label>
+<input type="text" name="denominacion" id="denominacion"
+       value="{{ inscrito.denominacion }}">
+</div>
+
+<div>
+<label>Nombre de la Iglesia</label>
+<input type="text" name="iglesia" id="iglesia" required
+       value="{{ inscrito.iglesia }}">
+</div>
+
+<!-- ZONA -->
+<div id="zona-container">
+  <label>Zona</label>
+  <select name="zona" id="zona" required>
+    <option value="">Seleccione</option>
+    <option value="CENTRAL" {% if inscrito.zona == "CENTRAL" %}selected{% endif %}>CENTRAL</option>
+    <option value="CDMX" {% if inscrito.zona == "CDMX" %}selected{% endif %}>CD. DE MEX.</option>
+    <option value="PUEBLA" {% if inscrito.zona == "PUEBLA" %}selected{% endif %}>PUEBLA, PUE.</option>
+    <option value="XALAPA" {% if inscrito.zona == "XALAPA" %}selected{% endif %}>XALAPA, VER.</option>
+    <option value="MISANTLA" {% if inscrito.zona == "MISANTLA" %}selected{% endif %}>MISANTLA, VER.</option>
+    <option value="ALTOTONGA" {% if inscrito.zona == "ALTOTONGA" %}selected{% endif %}>ALTOTONGA, VER.</option>
+    <option value="JUCHIQUE" {% if inscrito.zona == "JUCHIQUE" %}selected{% endif %}>JUCHIQUE DE FERRER, VER.</option>
+    <option value="POZA_RICA" {% if inscrito.zona == "POZA_RICA" %}selected{% endif %}>POZA RICA, VER.</option>
+    <option value="CUERNAVACA" {% if inscrito.zona == "CUERNAVACA" %}selected{% endif %}>CUERNAVACA, MOR.</option>
+    <option value="URUAPAN" {% if inscrito.zona == "URUAPAN" %}selected{% endif %}>URUAPAN, MICH.</option>
+    <option value="CARDENAS" {% if inscrito.zona == "CARDENAS" %}selected{% endif %}>CARDENAS, TAB.</option>
+    <option value="GUADALAJARA" {% if inscrito.zona == "GUADALAJARA" %}selected{% endif %}>GUADALAJARA, JAL.</option>
+    <option value="SILAO" {% if inscrito.zona == "SILAO" %}selected{% endif %}>SILAO, GTO.</option>
+    <option value="PACHUCA" {% if inscrito.zona == "PACHUCA" %}selected{% endif %}>PACHUCA, HGO.</option>
+    <option value="CANCUN" {% if inscrito.zona == "CANCUN" %}selected{% endif %}>CANCÚN, Q. R.</option>
+    <option value="JUAREZ" {% if inscrito.zona == "JUAREZ" %}selected{% endif %}>CIUDAD JUÁREZ, CHIH.</option>
+    <option value="MATIAS_ROMERO" {% if inscrito.zona == "MATIAS_ROMERO" %}selected{% endif %}>MATÍAS ROMERO, OAX.</option>
+    <option value="CHILPANCINGO" {% if inscrito.zona == "CHILPANCINGO" %}selected{% endif %}>CHILPANCINGO, GRO.</option>
+    <option value="TIJUANA" {% if inscrito.zona == "TIJUANA" %}selected{% endif %}>TIJUANA, B.C.</option>
+    <option value="REYNOSA" {% if inscrito.zona == "REYNOSA" %}selected{% endif %}>REYNOSA, TAMPS.</option>
+    <option value="TOLUCA" {% if inscrito.zona == "TOLUCA" %}selected{% endif %}>TOLUCA, EDO. DE MEX.</option>
+    <option value="OAXACA" {% if inscrito.zona == "OAXACA" %}selected{% endif %}>OAXACA, OAX.</option>
+    <option value="ELGIN" {% if inscrito.zona == "ELGIN" %}selected{% endif %}>ELGIN ILLINOIS, EUA</option>
+    <option value="TAPACHULA" {% if inscrito.zona == "TAPACHULA" %}selected{% endif %}>TAPACHULA, CHIS.</option>
+    <option value="CABO" {% if inscrito.zona == "CABO" %}selected{% endif %}>CABO SAN LUCAS, B.C.S.</option>
+    <option value="TEZIUTLAN" {% if inscrito.zona == "TEZIUTLAN" %}selected{% endif %}>TEZIUTLÁN, PUE.</option>
+    <option value="TAMPICO" {% if inscrito.zona == "TAMPICO" %}selected{% endif %}>TAMPICO, TAMPS.</option>
+    <option value="VERACRUZ" {% if inscrito.zona == "VERACRUZ" %}selected{% endif %}>VERACRUZ, VER.</option>
+    <option value="TOPILEJO" {% if inscrito.zona == "TOPILEJO" %}selected{% endif %}>TOPILEJO, CD. MEX.</option>
+    <option value="NEZA" {% if inscrito.zona == "NEZA" %}selected{% endif %}>CIUDAD NEZAHUALCÓYOTL, EDOMEX</option>
+    <option value="MIRAFLORES" {% if inscrito.zona == "MIRAFLORES" %}selected{% endif %}>MIRAFLORES, EDOMEX</option>
+    <option value="CALPULALPAN" {% if inscrito.zona == "CALPULALPAN" %}selected{% endif %}>CALPULALPAN, TLAX.</option>
+    <option value="COYOTEPEC" {% if inscrito.zona == "COYOTEPEC" %}selected{% endif %}>COYOTEPEC, EDOMEX</option>
+    <option value="CENTRO_SUR" {% if inscrito.zona == "CENTRO_SUR" %}selected{% endif %}>CENTRO Y SUDAMÉRICA</option>
+  </select>
+</div>
+
+<!-- SUBZONA -->
+<div id="subzona-container">
+<label>Sub Zona</label>
+<input type="text" name="subzona" id="subzona" required
+       value="{{ inscrito.subzona }}">
+</div>
+
+<div>
+  <label>Grado Eclesiástico</label>
+  <select name="grado" id="grado" required>
+    <option value="">Seleccione</option>
+    <option value="MINISTRO" {% if inscrito.grado == "MINISTRO" %}selected{% endif %}>MINISTRO / DIACONISA</option>
+    <option value="EG_ITE_ESC" {% if inscrito.grado == "EG_ITE_ESC" %}selected{% endif %}>EGRESADO DEL I.T.E. (Sistema Escolarizado)</option>
+    <option value="EG_ITE_AB" {% if inscrito.grado == "EG_ITE_AB" %}selected{% endif %}>EGRESADO DEL I.T.E. (Sistema Abierto)</option>
+    <option value="EST_1_ESC" {% if inscrito.grado == "EST_1_ESC" %}selected{% endif %}>ESTUDIANTE (PRIMER AÑO) S.E.</option>
+    <option value="EST_2_ESC" {% if inscrito.grado == "EST_2_ESC" %}selected{% endif %}>ESTUDIANTE (SEGUNDO AÑO) S.E.</option>
+    <option value="EST_3_ESC" {% if inscrito.grado == "EST_3_ESC" %}selected{% endif %}>ESTUDIANTE (TERCER AÑO) S.E.</option>
+    <option value="EST_1_AB" {% if inscrito.grado == "EST_1_AB" %}selected{% endif %}>ESTUDIANTE (PRIMER AÑO) S. ABIERTO</option>
+    <option value="EST_2_AB" {% if inscrito.grado == "EST_2_AB" %}selected{% endif %}>ESTUDIANTE (SEGUNDO AÑO) S. ABIERTO</option>
+    <option value="EST_3_AB" {% if inscrito.grado == "EST_3_AB" %}selected{% endif %}>ESTUDIANTE (TERCER AÑO) S. ABIERTO</option>
+    <option value="EST_4_AB" {% if inscrito.grado == "EST_4_AB" %}selected{% endif %}>ESTUDIANTE (CUARTO AÑO) S. ABIERTO</option>
+    <option value="OBRERO" {% if inscrito.grado == "OBRERO" %}selected{% endif %}>OBRERO LAICO</option>
+    <option value="ANCIANO" {% if inscrito.grado == "ANCIANO" %}selected{% endif %}>ANCIANO DE IGLESIA</option>
+    <option value="OTRO" {% if inscrito.grado == "OTRO" %}selected{% endif %}>OTRO (ESPECIFICAR)</option>
+    <option value="REP_ZONA" {% if inscrito.grado == "REP_ZONA" %}selected{% endif %}>REPRESENTANTE DE ZONA</option>
+    <option value="REP_SUBZONA" {% if inscrito.grado == "REP_SUBZONA" %}selected{% endif %}>REPRESENTANTE DE SUB ZONA</option>
+    <option value="EG_XAL_ESC" {% if inscrito.grado == "EG_XAL_ESC" %}selected{% endif %}>EGRESADO ITE CAMPUS XALAPA S. ESCOLARIZADO</option>
+    <option value="EG_XAL_AB" {% if inscrito.grado == "EG_XAL_AB" %}selected{% endif %}>EGRESADO ITE CAMPUS XALAPA S. ABIERTO</option>
+    <option value="EG_SUR_ESC" {% if inscrito.grado == "EG_SUR_ESC" %}selected{% endif %}>EGRESADO ITE CAMPUS SURESTE S. ESCOLARIZADO</option>
+    <option value="EG_ELGIN" {% if inscrito.grado == "EG_ELGIN" %}selected{% endif %}>EGRESADO ITE CAMPUS ELGIN, IL</option>
+    <option value="SIN_RANGO" {% if inscrito.grado == "SIN_RANGO" %}selected{% endif %}>SIN RANGO</option>
+  </select>
+</div>
+
+<div>
+<label>Nombre del Pastor</label>
+<input type="text" name="pastor" id="pastor" required
+       value="{{ inscrito.pastor }}">
+</div>
+
+<div>
+<label>Correo electrónico</label>
+<input type="email" name="correo_electronico" id="correo" required
+       value="{{ inscrito.correo_electronico }}">
+</div>
+
+<div>
+<label>Teléfono</label>
+<input type="tel" name="telefono" id="telefono" required
+       value="{{ inscrito.telefono }}">
+</div>
+
+<div>
+<label>Periodo de pago</label>
+<select id="periodo_select" required>
+<option value="">Seleccione</option>
+<option value="07 Ene - 21 Feb|1500"
+{% if inscrito.periodo == "07 Ene - 21 Feb" %}selected{% endif %}>
+05 Ene - 07 Feb — $1,700
+</option>
+<option value="22 Feb - 31 Mar|1700"
+{% if inscrito.periodo == "22 Feb - 31 Mar" %}selected{% endif %}>
+08 Feb - 21 Mar — $1,900
+</option>
+<option value="31 Mar - 26 Abr|1900"
+{% if inscrito.periodo == "31 Mar - 26 Abr" %}selected{% endif %}>
+21 Mar - 13 Abr — $2,100
+</option>
+</select>
+</div>
+
+<input type="hidden" name="periodo" id="periodo" value="{{ inscrito.periodo }}">
+<input type="hidden" name="monto" id="monto" value="{{ inscrito.monto }}">
+
+<div class="submit-container">
+<button type="submit">Actualizar</button>
+</div>
+
+</form>
+</section>
+</div>
+
+<style>
+/* === DISEÑO ACTUALIZADO === */
+.form-card{
+background:rgba(255,255,255,.75);
+padding:24px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,.1);
+backdrop-filter:blur(16px);
+}
+form{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+}
+label{font-size:14px}
+input,select{
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+.submit-container{
+grid-column:1/-1;
+display:flex;
+justify-content:center;
+margin-top:10px;
+}
+.logout {
+  padding: 6px;
+}
+button{
+padding:10px 26px;
+border:none;
+border-radius:10px;
+background:#52658c;
+color:#fff;
+font-size:16px;
+cursor:pointer;
+}
+@media(max-width:768px){
+form{grid-template-columns:1fr}
+}
+/* RADIOS */
+.radio-group{
+display:flex;
+gap:20px;
+margin-top:4px;
+}
+.radio-item{
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+font-size:14px;
+}
+.radio-item input{display:none;}
+.radio-item span{
+width:18px;
+height:18px;
+border:2px solid #52658c;
+border-radius:50%;
+position:relative;
+}
+.radio-item input:checked + span::after{
+content:'';
+width:10px;
+height:10px;
+background:#52658c;
+border-radius:50%;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+/* SWITCH */
+.switch-container{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:10px;
+}
+.switch{
+  position:relative;
+  width:46px;
+  height:24px;
+}
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+.slider{
+  position:absolute;
+  cursor:pointer;
+  inset:0;
+  background:#ccc;
+  border-radius:24px;
+  transition:.3s;
+}
+.slider::before{
+  content:"";
+  position:absolute;
+  height:18px;
+  width:18px;
+  left:3px;
+  bottom:3px;
+  background:white;
+  border-radius:50%;
+  transition:.3s;
+}
+.switch input:checked + .slider{
+  background:#52658c;
+}
+.switch input:checked + .slider::before{
+  transform:translateX(22px);
+}
+.switch-label{
+  font-size:14px;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* === OTRA DENOMINACIÓN === */
+const otra = document.getElementById('otra_denominacion');
+const zona = document.getElementById('zona');
+const subzona = document.getElementById('subzona');
+const denominacion = document.getElementById('denominacion');
+
+function toggleOtra() {
+  const esOtra = otra.checked;
+  if (esOtra) {
+    document.getElementById('zona-container').style.display = 'none';
+    document.getElementById('subzona-container').style.display = 'none';
+    zona.required = false;
+    subzona.required = false;
+    document.getElementById('denominacion-container').style.display = 'block';
+    denominacion.required = true;
+  } else {
+    document.getElementById('zona-container').style.display = 'block';
+    document.getElementById('subzona-container').style.display = 'block';
+    zona.required = true;
+    subzona.required = true;
+    document.getElementById('denominacion-container').style.display = 'none';
+    denominacion.required = false;
+  }
+}
+
+otra.addEventListener('change', toggleOtra);
+toggleOtra(); // 🔥 Ejecutar al cargar para mostrar el estado correcto
+
+/* === PERIODO === */
+const periodo_select = document.getElementById('periodo_select');
+periodo_select.addEventListener('change', () => {
+  if (!periodo_select.value) return;
+  const [p, m] = periodo_select.value.split('|');
+  periodo.value = p;
+  monto.value = m;
+});
+</script>
+{% endblock %}

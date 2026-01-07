@@ -1,0 +1,341 @@
+{% extends 'miepi/base.html' %}
+
+{% block title %}Inscripción{% endblock %}
+{% block header_title %}Registro{% endblock %}
+
+{% block content %}
+<div class="container">
+
+<section id="registro" class="form-card">
+<form method="POST" action="{% url 'miepi:inscrito_create' %}" id="form">
+{% csrf_token %}
+
+<div>
+<label>Nombre Completo</label>
+<input type="text" name="nombre" id="nombre" required>
+</div>
+
+<div>
+<label>Género</label>
+<div class="radio-group">
+<label class="radio-item">
+<input type="radio" name="genero" value="Masculino" required>
+<span></span> Masculino
+</label>
+
+<label class="radio-item">
+<input type="radio" name="genero" value="Femenino">
+<span></span> Femenino
+</label>
+</div>
+</div>
+
+<div class="switch-container">
+  <label class="switch">
+    <input type="checkbox" id="otra_denominacion" name="otra_denominacion">
+    <span class="slider"></span>
+  </label>
+  <span class="switch-label">¿Otra denominación?</span>
+</div>
+
+
+
+<!-- NOMBRE DENOMINACIÓN (MISMO LUGAR, ENVUELTO) -->
+<div id="denominacion-container" style="display:none">
+<label>Nombre de la Denominación</label>
+<input type="text" name="denominacion" id="denominacion">
+</div>
+
+<div>
+<label>Nombre de la Iglesia</label>
+<input type="text" name="iglesia" id="iglesia" required>
+</div>
+
+<!-- ZONA -->
+<div id="zona-container">
+  <label>Zona</label>
+  <select name="zona" id="zona" required>
+    <option value="">Seleccione</option>
+
+    <option value="CENTRAL">CENTRAL</option>
+    <option value="CDMX">CD. DE MEX.</option>
+    <option value="PUEBLA">PUEBLA, PUE.</option>
+    <option value="XALAPA">XALAPA, VER.</option>
+    <option value="MISANTLA">MISANTLA, VER.</option>
+    <option value="ALTOTONGA">ALTOTONGA, VER.</option>
+    <option value="JUCHIQUE">JUCHIQUE DE FERRER, VER.</option>
+    <option value="POZA_RICA">POZA RICA, VER.</option>
+    <option value="CUERNAVACA">CUERNAVACA, MOR.</option>
+    <option value="URUAPAN">URUAPAN, MICH.</option>
+    <option value="CARDENAS">CARDENAS, TAB.</option>
+    <option value="GUADALAJARA">GUADALAJARA, JAL.</option>
+    <option value="SILAO">SILAO, GTO.</option>
+    <option value="PACHUCA">PACHUCA, HGO.</option>
+    <option value="CANCUN">CANCÚN, Q. R.</option>
+    <option value="JUAREZ">CIUDAD JUÁREZ, CHIH.</option>
+    <option value="MATIAS_ROMERO">MATÍAS ROMERO, OAX.</option>
+    <option value="CHILPANCINGO">CHILPANCINGO, GRO.</option>
+    <option value="TIJUANA">TIJUANA, B.C.</option>
+    <option value="REYNOSA">REYNOSA, TAMPS.</option>
+    <option value="TOLUCA">TOLUCA, EDO. DE MEX.</option>
+    <option value="OAXACA">OAXACA, OAX.</option>
+    <option value="ELGIN">ELGIN ILLINOIS, EUA</option>
+    <option value="TAPACHULA">TAPACHULA, CHIS.</option>
+    <option value="CABO">CABO SAN LUCAS, B.C.S.</option>
+    <option value="TEZIUTLAN">TEZIUTLÁN, PUE.</option>
+    <option value="TAMPICO">TAMPICO, TAMPS.</option>
+    <option value="VERACRUZ">VERACRUZ, VER.</option>
+    <option value="TOPILEJO">TOPILEJO, CD. MEX.</option>
+    <option value="NEZA">CIUDAD NEZAHUALCÓYOTL, EDOMEX</option>
+    <option value="MIRAFLORES">MIRAFLORES, EDOMEX</option>
+    <option value="CALPULALPAN">CALPULALPAN, TLAX.</option>
+    <option value="COYOTEPEC">COYOTEPEC, EDOMEX</option>
+    <option value="CENTRO_SUR">CENTRO Y SUDAMÉRICA</option>
+  </select>
+</div>
+
+
+<!-- SUBZONA -->
+<div id="subzona-container">
+<label>Sub Zona</label>
+<input type="text" name="subzona" id="subzona" required>
+</div>
+
+<div>
+  <label>Grado Eclesiástico</label>
+  <select name="grado" id="grado" required>
+    <option value="">Seleccione</option>
+
+    <option value="MINISTRO">MINISTRO / DIACONISA</option>
+    <option value="EG_ITE_ESC">EGRESADO DEL I.T.E. (Sistema Escolarizado)</option>
+    <option value="EG_ITE_AB">EGRESADO DEL I.T.E. (Sistema Abierto)</option>
+    <option value="EST_1_ESC">ESTUDIANTE (PRIMER AÑO) S.E.</option>
+    <option value="EST_2_ESC">ESTUDIANTE (SEGUNDO AÑO) S.E.</option>
+    <option value="EST_3_ESC">ESTUDIANTE (TERCER AÑO) S.E.</option>
+    <option value="EST_1_AB">ESTUDIANTE (PRIMER AÑO) S. ABIERTO</option>
+    <option value="EST_2_AB">ESTUDIANTE (SEGUNDO AÑO) S. ABIERTO</option>
+    <option value="EST_3_AB">ESTUDIANTE (TERCER AÑO) S. ABIERTO</option>
+    <option value="EST_4_AB">ESTUDIANTE (CUARTO AÑO) S. ABIERTO</option>
+    <option value="OBRERO">OBRERO LAICO</option>
+    <option value="ANCIANO">ANCIANO DE IGLESIA</option>
+    <option value="OTRO">OTRO (ESPECIFICAR)</option>
+    <option value="REP_ZONA">REPRESENTANTE DE ZONA</option>
+    <option value="REP_SUBZONA">REPRESENTANTE DE SUB ZONA</option>
+    <option value="EG_XAL_ESC">EGRESADO ITE CAMPUS XALAPA S. ESCOLARIZADO</option>
+    <option value="EG_XAL_AB">EGRESADO ITE CAMPUS XALAPA S. ABIERTO</option>
+    <option value="EG_SUR_ESC">EGRESADO ITE CAMPUS SURESTE S. ESCOLARIZADO</option>
+    <option value="EG_ELGIN">EGRESADO ITE CAMPUS ELGIN, IL</option>
+    <option value="SIN_RANGO">SIN RANGO</option>
+  </select>
+</div>
+
+
+<div>
+<label>Nombre del Pastor</label>
+<input type="text" name="pastor" id="pastor" required>
+</div>
+
+<div>
+<label>Correo electrónico</label>
+<input type="email" name="correo_electronico" id="correo" required>
+</div>
+
+<div>
+<label>Teléfono</label>
+<input type="tel" name="telefono" id="telefono" required>
+</div>
+
+<div>
+<label>Periodo de pago</label>
+<select id="periodo_select" required>
+<option value="">Seleccione</option>
+<option value="07 Ene - 21 Feb|1500">05 Ene - 07 Feb — $1,700</option>
+<option value="22 Feb - 31 Mar|1700">08 Feb - 21 Mar — $1,900</option>
+<option value="31 Mar - 26 Abr|1900">21 Mar - 13 Abr — $2,100</option>
+</select>
+</div>
+
+<input type="hidden" name="periodo" id="periodo">
+<input type="hidden" name="monto" id="monto">
+
+<div class="submit-container">
+<button type="submit">Registrar</button>
+</div>
+
+</form>
+</section>
+</div>
+
+<style>
+/* === TU CSS EXISTENTE === */
+.form-card{
+background:rgba(255,255,255,.75);
+padding:24px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,.1);
+backdrop-filter:blur(16px);
+}
+form{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+}
+label{font-size:14px}
+input,select{
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+.submit-container{
+grid-column:1/-1;
+display:flex;
+justify-content:center;
+margin-top:10px;
+}
+
+.logout {
+  padding: 6px;
+}
+button{
+padding:10px 26px;
+border:none;
+border-radius:10px;
+background:#52658c;
+color:#fff;
+font-size:16px;
+cursor:pointer;
+}
+@media(max-width:768px){
+form{grid-template-columns:1fr}
+}
+
+/* RADIOS */
+.radio-group{
+display:flex;
+gap:20px;
+margin-top:4px;
+}
+.radio-item{
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+font-size:14px;
+}
+.radio-item input{display:none;}
+.radio-item span{
+width:18px;
+height:18px;
+border:2px solid #52658c;
+border-radius:50%;
+position:relative;
+}
+.radio-item input:checked + span::after{
+content:'';
+width:10px;
+height:10px;
+background:#52658c;
+border-radius:50%;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+.switch-container{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:10px;
+}
+
+.switch{
+  position:relative;
+  width:46px;
+  height:24px;
+}
+
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  cursor:pointer;
+  inset:0;
+  background:#ccc;
+  border-radius:24px;
+  transition:.3s;
+}
+
+.slider::before{
+  content:"";
+  position:absolute;
+  height:18px;
+  width:18px;
+  left:3px;
+  bottom:3px;
+  background:white;
+  border-radius:50%;
+  transition:.3s;
+}
+
+.switch input:checked + .slider{
+  background:#52658c;
+}
+
+.switch input:checked + .slider::before{
+  transform:translateX(22px);
+}
+
+.switch-label{
+  font-size:14px;
+}
+
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* === OTRA DENOMINACIÓN === */
+const otra = document.getElementById('otra_denominacion');
+
+otra.addEventListener('change', () => {
+  const esOtra = otra.checked;
+
+  if (esOtra) {
+    document.getElementById('zona-container').style.display = 'none';
+    document.getElementById('subzona-container').style.display = 'none';
+
+    zona.required = false;
+    subzona.required = false;
+
+    document.getElementById('denominacion-container').style.display = 'block';
+    denominacion.required = true;
+  } else {
+    document.getElementById('zona-container').style.display = 'block';
+    document.getElementById('subzona-container').style.display = 'block';
+
+    zona.required = true;
+    subzona.required = true;
+
+    document.getElementById('denominacion-container').style.display = 'none';
+    denominacion.required = false;
+    denominacion.value = '';
+  }
+});
+
+
+/* === PERIODO === */
+periodo_select.addEventListener('change',()=>{
+if(!periodo_select.value)return;
+const[p,m]=periodo_select.value.split('|');
+periodo.value=p;
+monto.value=m;
+});
+
+
+</script>
+{% endblock %}
