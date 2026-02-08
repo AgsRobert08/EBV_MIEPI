@@ -34,7 +34,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import Inscrito, Asistencia
 from .forms import *
-#from miepi.services.email import enviar_correo_registro
+from miepi.services.email import enviar_correo_registro
 from django.core.files.base import ContentFile
 
 from django.core.files.base import ContentFile
