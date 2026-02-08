@@ -34,10 +34,79 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import Inscrito, Asistencia
 from .forms import *
-from miepi.services.email import enviar_correo_registro
+#from miepi.services.email import enviar_correo_registro
 from django.core.files.base import ContentFile
 
+from django.core.files.base import ContentFile
+import qrcode
+from io import BytesIO
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import InscritoForm
+from miepi.services.email import enviar_correo_registro
+import logging
+from threading import Thread
 
+logger = logging.getLogger(__name__)
+
+def enviar_email_async(inscrito):
+    """Enviar email en segundo plano sin bloquear la respuesta"""
+    try:
+        enviar_correo_registro(inscrito)
+        logger.info(f"Correo enviado exitosamente a {inscrito.correo_electronico}")
+    except Exception as e:
+        logger.error(f"Error enviando correo: {str(e)}")
+
+class InscritoCreateView(LoginRequiredMixin, View):
+    template_name = 'miepi/dashboard.html'
+    
+    def get(self, request):
+        form = InscritoForm()
+        return render(request, self.template_name, {'form': form})
+    
+    def post(self, request):
+        form = InscritoForm(request.POST)
+        if not form.is_valid():
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, error)
+            return render(request, self.template_name, {'form': form})
+        
+        inscrito = form.save()
+        
+        try:
+            # Generar QR
+            qr = qrcode.make(str(inscrito.codigo))
+            buffer = BytesIO()
+            qr.save(buffer, format='PNG')
+            buffer.seek(0)
+            
+            # Guardar en Cloudinary
+            filename = f"qr_{inscrito.codigo}.png"
+            inscrito.qr_image.save(
+                filename,
+                ContentFile(buffer.read()),
+                save=True
+            )
+            logger.info(f"QR guardado en Cloudinary para {inscrito.codigo}")
+            
+        except Exception as e:
+            logger.error(f"Error guardando QR: {str(e)}")
+            messages.error(request, "Error al generar el código QR")
+            inscrito.delete()
+            return render(request, self.template_name, {'form': form})
+        
+        # ✅ Enviar email en segundo plano (no bloquea la respuesta)
+        Thread(target=enviar_email_async, args=(inscrito,), daemon=True).start()
+        
+        messages.success(
+            request, 
+            "Usuario registrado correctamente. El correo será enviado en breve."
+        )
+        
+        return redirect('miepi:inscritos_list')
 
 # vista del login
 def login_view(request):
@@ -65,6 +134,7 @@ def dashboard(request):
     return render(request, 'miepi/dashboard.html')
 
 # Inscribir a los usuarios
+'''
 class InscritoCreateView(LoginRequiredMixin, View):
     template_name = 'miepi/dashboard.html'
 
@@ -111,7 +181,7 @@ class InscritoCreateView(LoginRequiredMixin, View):
         )
 
         return redirect('miepi:inscritos_list')
-
+'''
 def get_inscritos_filtrados(request):
     genero = request.GET.get('genero', '').strip()
 
