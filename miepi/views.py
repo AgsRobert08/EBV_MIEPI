@@ -35,6 +35,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from .models import Inscrito, Asistencia
 from .forms import *
 from miepi.services.email import enviar_correo_registro
+from django.core.files.base import ContentFile
+
 
 
 # vista del login
@@ -88,8 +90,8 @@ class InscritoCreateView(LoginRequiredMixin, View):
         buffer.seek(0)
 
         inscrito.qr_image.save(
-            f"{inscrito.codigo}.png",
-            File(buffer),
+            f"qr_{inscrito.codigo}.png",
+            ContentFile(buffer.read()),  # ✅ Esto sí funciona con Cloudinary
             save=True
         )
 
