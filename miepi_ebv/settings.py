@@ -157,18 +157,21 @@ CSRF_TRUSTED_ORIGINS = [
         "CSRF_TRUSTED_ORIGINS", ""
     ).split(",") if origin
 ]
-#import cloudinary
-#import cloudinary.uploader
-#import cloudinary.api
+# =========================
+# CLOUDINARY
+# =========================
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
-#CLOUDINARY_STORAGE = {
- #   'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-  #  'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-  #  'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-#}
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', 'dmvmpkr4a'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY', '592425688248417'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET', '5ahSxL-CLAN9lzShyUQUXjuTsdQ'),
+}
 
 # Usar Cloudinary para archivos media
-#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # URL base del sitio
 SITE_URL = 'https://web-production-75b31.up.railway.app'
