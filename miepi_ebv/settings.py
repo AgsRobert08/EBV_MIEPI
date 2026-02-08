@@ -34,8 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-   # 'cloudinary_storage',
-   # 'cloudinary',
+    'cloudinary_storage',
+    'cloudinary',
 
     'miepi',
 ]
