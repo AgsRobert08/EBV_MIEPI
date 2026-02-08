@@ -169,3 +169,9 @@ CSRF_TRUSTED_ORIGINS = [
 
 # Usar Cloudinary para archivos media
 #DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# URL base del sitio
+SITE_URL = 'https://web-production-75b31.up.railway.app'
+
+# Timeout para emails
+EMAIL_TIMEOUT = 30
